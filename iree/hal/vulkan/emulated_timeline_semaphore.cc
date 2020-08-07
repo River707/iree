@@ -293,7 +293,7 @@ StatusOr<bool> EmulatedTimelineSemaphore::TryToAdvanceTimeline(
         // fences.
         keep_resolving = false;
         semaphore->signal_fence = nullptr;
-        status_ = VkResultToStatus(signal_status);
+        status_ = VkResultToStatus(__FILE__, __LINE__, signal_status);
         signaled_value_.store(UINT64_MAX);
         break;
     }
