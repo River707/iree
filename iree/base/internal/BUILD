@@ -122,6 +122,7 @@ cc_library(
     deps = [
         ":logging_internal",
         ":ostringstream",
+        "//iree/base:api",
         "//iree/base:target_platform",
         "@com_google_absl//absl/base:core_headers",
         "@com_google_absl//absl/memory",
