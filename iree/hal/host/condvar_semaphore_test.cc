@@ -18,7 +18,7 @@
 #include <thread>  // NOLINT
 
 #include "iree/base/status.h"
-#include "iree/base/status_matchers.h"
+#include "iree/testing/status_matchers.h"
 #include "iree/testing/gtest.h"
 
 namespace iree {

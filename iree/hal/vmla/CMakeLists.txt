@@ -44,8 +44,8 @@ iree_cc_test(
     ::op_kernels
     absl::inlined_vector
     iree::base::memory
-    iree::base::status_matchers
     iree::testing::gtest_main
+    iree::testing::status_matchers
 )
 
 iree_cc_library(

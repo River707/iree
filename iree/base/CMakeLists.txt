@@ -183,9 +183,9 @@ iree_cc_test(
     ::dynamic_library_test_library
     ::file_io
     ::status
-    ::status_matchers
     ::target_platform
     iree::testing::gtest_main
+    iree::testing::status_matchers
 )
 
 iree_cc_library(
@@ -224,9 +224,9 @@ iree_cc_test(
     ::file_path
     ::logging
     ::status
-    ::status_matchers
     absl::strings
     iree::testing::gtest_main
+    iree::testing::status_matchers
 )
 
 iree_cc_library(
@@ -457,17 +457,6 @@ iree_cc_library(
   PUBLIC
 )
 
-iree_cc_library(
-  NAME
-    status_matchers
-  HDRS
-    "status_matchers.h"
-  DEPS
-    iree::base::internal::status_matchers_internal
-  TESTONLY
-  PUBLIC
-)
-
 iree_cc_test(
   NAME
     status_test
@@ -475,8 +464,8 @@ iree_cc_test(
     "status_test.cc"
   DEPS
     ::status
-    ::status_matchers
     iree::testing::gtest_main
+    iree::testing::status_matchers
 )
 
 iree_cc_library(
@@ -566,6 +555,6 @@ endif()
 #     absl::time
 #     iree::testing::gtest_main
 #     iree::base::status
-#     iree::base::status_matchers
 #     iree::base::wait_handle
+#     iree::testing::status_matchers
 # )

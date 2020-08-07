@@ -23,13 +23,13 @@ iree_cc_library(
     iree::tools::sanitizer_suppressions.txt
   DEPS
     iree::base::status
-    iree::base::status_matchers
     iree::hal::driver_registry
     iree::hal::dylib::dylib_driver_module
     iree::hal::llvmjit::llvmjit_driver_module
     iree::hal::vmla::vmla_driver_module
     iree::hal::vulkan::vulkan_driver_module
     iree::testing::gtest_main
+    iree::testing::status_matchers
   TESTONLY
   PUBLIC
 )
@@ -42,9 +42,9 @@ iree_cc_test(
   DEPS
     ::cts_test_base
     iree::base::status
-    iree::base::status_matchers
     iree::hal::driver_registry
     iree::testing::gtest
+    iree::testing::status_matchers
 )
 
 iree_cc_test(
@@ -55,9 +55,9 @@ iree_cc_test(
   DEPS
     ::cts_test_base
     iree::base::status
-    iree::base::status_matchers
     iree::hal::driver_registry
     iree::testing::gtest
+    iree::testing::status_matchers
 )
 
 iree_cc_test(
@@ -68,9 +68,9 @@ iree_cc_test(
   DEPS
     ::cts_test_base
     iree::base::status
-    iree::base::status_matchers
     iree::hal::driver_registry
     iree::testing::gtest
+    iree::testing::status_matchers
 )
 
 iree_cc_test(
