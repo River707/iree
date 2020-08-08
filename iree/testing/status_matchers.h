@@ -17,7 +17,7 @@
 
 #include <memory>
 
-#include "absl/strings/str_cat.h"
+#include "absl/strings/string_view.h"
 #include "absl/types/optional.h"
 #include "iree/base/status.h"
 #include "iree/testing/gtest.h"
@@ -66,7 +66,7 @@ class IsOkAndHoldsMatcher
         value_matcher_.MatchAndExplain(status_or.value(), &value_listener);
     std::string value_explanation = value_listener.str();
     if (!value_explanation.empty()) {
-      *listener << absl::StrCat("which contains a value ", value_explanation);
+      *listener << "which contains a value " << value_explanation;
     }
 
     return is_a_match;
@@ -304,6 +304,7 @@ inline internal::IsOkMatcherGenerator IsOk() {
 }  // namespace status
 }  // namespace testing
 
+// TODO(#265): rename to IREE_*_OK.
 // Macros for testing the results of functions that return iree::Status or
 // iree::StatusOr<T> (for any type T).
 #define EXPECT_OK(rexpr) EXPECT_THAT(rexpr, ::iree::testing::status::IsOk())
@@ -343,7 +344,7 @@ void PrintTo(const StatusOr<T> &statusor, std::ostream *os) {
   if (!statusor.ok()) {
     *os << statusor.status();
   } else {
-    *os << absl::StrCat("OK: ", ::testing::PrintToString(statusor.value()));
+    *os << "OK: " << ::testing::PrintToString(statusor.value());
   }
 }
 
