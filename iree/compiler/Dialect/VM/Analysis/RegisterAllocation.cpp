@@ -341,18 +341,18 @@ struct FeedbackArcSet {
       int outdegree = 0;
     };
     SmallVector<FASNode, 8> nodeStorage;
-    llvm::SmallDenseMap<NodeID, FASNode *> nodes;
+    llvm::SmallDenseMap<NodeID, FASNode> nodes;
     for (auto &edge : inputEdges) {
       NodeID sourceID = edge.first.asBaseRegister();
       NodeID sinkID = edge.second.asBaseRegister();
       assert(sourceID != sinkID && "self-cycles not supported");
       if (nodes.count(sourceID) == 0) {
         nodeStorage.push_back({sourceID, 0, 0});
-        nodes.insert({sourceID, &nodeStorage.back()});
+        nodes.insert({sourceID, {sourceID, 0, 0}});
       }
       if (nodes.count(sinkID) == 0) {
         nodeStorage.push_back({sinkID, 0, 0});
-        nodes.insert({sinkID, &nodeStorage.back()});
+        nodes.insert({sinkID, {sinkID, 0, 0}});
       }
     }
 
@@ -366,13 +366,13 @@ struct FeedbackArcSet {
     for (auto &edge : inputEdges) {
       NodeID sourceID = edge.first.asBaseRegister();
       NodeID sinkID = edge.second.asBaseRegister();
-      auto *sourceNode = nodes[sourceID];
-      ++sourceNode->outdegree;
-      maxOutdegree = std::max(maxOutdegree, sourceNode->outdegree);
-      auto *sinkNode = nodes[sinkID];
-      ++sinkNode->indegree;
-      maxIndegree = std::max(maxIndegree, sinkNode->indegree);
-      edges.push_back({sourceNode, sinkNode});
+      auto &sourceNode = nodes[sourceID];
+      ++sourceNode.outdegree;
+      maxOutdegree = std::max(maxOutdegree, sourceNode.outdegree);
+      auto &sinkNode = nodes[sinkID];
+      ++sinkNode.indegree;
+      maxIndegree = std::max(maxIndegree, sinkNode.indegree);
+      edges.push_back({&sourceNode, &sinkNode});
     }
 
     std::vector<SmallVector<FASNode *, 2>> buckets;
@@ -393,7 +393,7 @@ struct FeedbackArcSet {
       }
     };
     for (auto &nodeEntry : nodes) {
-      assignBucket(nodeEntry.second);
+      assignBucket(&nodeEntry.second);
     }
 
     auto removeNode = [&](FASNode *node) {
@@ -416,6 +416,7 @@ struct FeedbackArcSet {
         }
         removeBucket(edge.source);
         --edge.source->outdegree;
+        assert(edge.source->outdegree >= 0 && "outdegree has become negative");
         assignBucket(edge.source);
       }
       for (auto &edge : outEdges) {
@@ -425,6 +426,7 @@ struct FeedbackArcSet {
         }
         removeBucket(edge.sink);
         --edge.sink->indegree;
+        assert(edge.sink->indegree >= 0 && "indegree has become negative");
         assignBucket(edge.sink);
       }
 
